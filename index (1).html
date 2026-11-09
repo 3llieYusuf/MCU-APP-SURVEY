@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MUST CU App Survey</title>
+<style>
+:root{--bg:#fbf7f0;--fg:#2a2433;--card:#fff;--mut:#7b7388;--line:#e8e1d6;--h:260;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17141d;--fg:#f3eefb;--card:#221e2b;--mut:#a79fb8;--line:#37304a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17141d;--fg:#f3eefb;--card:#221e2b;--mut:#a79fb8;--line:#37304a;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;transition:background .6s}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 0,hsl(var(--h) 80% 60%/.22),transparent 55%),radial-gradient(circle at 90% 100%,hsl(calc(var(--h) + 60) 80% 60%/.18),transparent 50%);transition:all .8s;z-index:-1}
+#bar{position:fixed;top:env(safe-area-inset-top,0px);left:0;height:6px;width:0;background:hsl(var(--h) 75% 55%);border-radius:0 6px 6px 0;transition:width .5s cubic-bezier(.2,.9,.3,1.2),background .6s;z-index:5}
+.wrap{max-width:640px;margin:0 auto;padding:36px 18px 90px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:26px 22px;box-shadow:0 14px 40px hsl(var(--h) 50% 40%/.12)}
+.in-r{animation:inr .45s cubic-bezier(.2,.9,.3,1)}.in-l{animation:inl .45s cubic-bezier(.2,.9,.3,1)}
+@keyframes inr{from{opacity:0;transform:translateX(60px) scale(.96)}}@keyframes inl{from{opacity:0;transform:translateX(-60px) scale(.96)}}
+.chip{display:inline-block;font-size:13px;font-weight:600;padding:4px 12px;border-radius:99px;background:hsl(var(--h) 80% 60%/.18);color:hsl(var(--h) 60% 45%);margin-bottom:12px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip{color:hsl(var(--h) 80% 75%)}}
+h1,h2{margin:0 0 6px;line-height:1.25}h1{font-size:28px}h2{font-size:22px}
+.mut{color:var(--mut);font-size:14px}
+.big{font-size:56px;display:inline-block;animation:bob 2.2s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-8px) rotate(6deg)}}
+.opts{display:grid;gap:10px;margin-top:18px}
+.o{display:flex;align-items:center;gap:12px;text-align:left;width:100%;font:inherit;color:inherit;background:transparent;border:2px solid var(--line);border-radius:16px;padding:13px 14px;cursor:pointer;transition:transform .15s,border-color .2s,background .2s;animation:pop .4s both;animation-delay:calc(var(--n)*40ms)}
+@keyframes pop{from{opacity:0;transform:translateY(12px)}}
+.o:hover{border-color:hsl(var(--h) 70% 60%)}.o:active{transform:scale(.97)}
+.o i{flex:none;width:24px;height:24px;border:2px solid var(--line);border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px;color:#fff;transition:.2s}
+.m .o i{border-radius:7px}
+.o.on{border-color:hsl(var(--h) 70% 55%);background:hsl(var(--h) 80% 60%/.14);transform:scale(1.02)}
+.o.on i{background:hsl(var(--h) 70% 50%);border-color:transparent;animation:tick .3s}
+@keyframes tick{50%{transform:scale(1.35)}}
+textarea,input[type=text]{width:100%;font:inherit;color:inherit;background:transparent;border:2px solid var(--line);border-radius:16px;padding:13px;margin-top:16px;resize:vertical;min-height:120px;outline:0;transition:border-color .2s,box-shadow .2s}
+input[type=text]{min-height:0;margin-top:10px}
+textarea:focus,input[type=text]:focus{border-color:hsl(var(--h) 70% 55%);box-shadow:0 0 0 4px hsl(var(--h) 80% 60%/.18)}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:22px}
+.b{font:inherit;font-weight:600;border:0;border-radius:99px;padding:12px 24px;cursor:pointer;background:hsl(var(--h) 70% 50%);color:#fff;transition:transform .15s,box-shadow .2s;box-shadow:0 6px 16px hsl(var(--h) 70% 50%/.35)}
+.b:hover{transform:translateY(-2px)}.b:active{transform:scale(.95)}
+.b.g{background:transparent;color:var(--mut);box-shadow:none;padding:12px 8px}
+.hint{text-align:center;margin-top:16px;font-size:13px;color:var(--mut)}
+#toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 22px);transform:translate(-50%,-80px);background:var(--fg);color:var(--bg);padding:8px 18px;border-radius:99px;font-weight:600;transition:transform .4s cubic-bezier(.2,.9,.3,1.3);z-index:9;pointer-events:none}
+#toast.s{transform:translate(-50%,0)}
+.cf{position:fixed;top:-30px;font-size:26px;animation:fall linear forwards;z-index:8;pointer-events:none}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style></head><body>
+<div id="bar"></div><div id="toast"></div>
+<div class="wrap"><div id="card" class="card"></div><div class="hint" id="hint"></div></div>
+<script>
+const P=["Very interested","Interested","Not sure","Slightly interested","Not interested"],YNN=["Yes","No","Not sure"];
+const F=["Fellowship announcements and updates","Upcoming services, events and programmes","Reminders about activities","Sermons, teachings and Bible study materials","Daily devotionals and Scripture reflections","Sharing prayer requests","Participating in prayer groups","Connecting and communicating with other members","Joining small groups or fellowship communities","Opportunities to serve and volunteer","Registering for events and programmes","Worship resources, songs and lyrics","Watching or listening to recorded services","Personal spiritual growth activities","Counselling or pastoral support information","Other (please specify)"];
+const S=[["📱","Your Interest","260","Let’s start with the big picture",5],["💡","Your Wishlist","330","Dream a little 🌟",5],["✨","The Experience","190","How should it feel?",6],["🤝","Community","25","Fellowship, but pocket-sized",4],["🌱","Personal Value","140","What’s in it for you?",5],["🔐","Trust & Access","215","Comfort, privacy, practicalities",5],["🚀","Your Big Ideas","300","The fun part. Be bold!",4]];
+const Q=[
+["s","Would you be interested in a dedicated MUST CU mobile app?",P],
+["s","If it were available, how likely are you to install it?",["Definitely would","Probably would","Not sure","Probably would not","Definitely would not"]],
+["s","How often do you think you’d open it?",["Several times a day","Once a day","A few times a week","Once a week","Only when necessary","Probably never"]],
+["t","What would make you excited to use a Christian Union app?"],
+["t","What would make you lose interest in it?"],
+["t","What would you most love to find or do inside the app?"],
+["m","Which of these would interest you? Pick all that apply 👇",F],
+["k","Of those, which THREE matter most to you? 🏆",F],
+["t","Is there something you wish the fellowship offered that you’d love to experience through an app?"],
+["t","What would make you excited to open the app even when there’s no upcoming event?"],
+["t","Imagine opening the app for the first time. What do you want to see or feel right away? 🎬"],
+["s","What kind of experience would you prefer?",["Simple and straightforward, just essential info","Interactive, so members can participate and engage","Community-oriented, helping members connect","Spiritual-growth-oriented, supporting personal development","A combination of these"]],
+["s","Would you enjoy content personalised to your interests, fellowship group or spiritual growth goals?",YNN],
+["s","Would you like chances to interact, not just receive information?",YNN],
+["t","What would make the app feel welcoming, personal and engaging to you?"],
+["t","What would make you keep coming back?"],
+["s","Would you prefer updates through a dedicated app rather than relying only on WhatsApp groups and other channels?",["Yes","No","A combination of both","Not sure"]],
+["s","Would you like to communicate with other members through the app?",["Yes","No","Only within organised groups","Not sure"]],
+["t","Would you join digital communities in the app (Bible study groups, prayer groups, campus fellowships, ministry teams)? Tell us which! 👥"],
+["t","What kind of interaction between members would you find most useful?"],
+["t","How could a mobile app improve your experience as a MUST CU member?"],
+["t","What personal benefit would make the app valuable enough to use regularly?"],
+["t","Would you want the app to support your spiritual growth outside scheduled meetings? If yes, how?"],
+["s","Would you like to track personal goals like Bible reading, prayer, devotionals or service?",["Yes","No","Maybe"]],
+["t","What would make you feel the app truly contributes to your life, rather than adding one more platform to your phone?"],
+["s","Which device will you most likely use?",["Android phone","iPhone","Tablet","Other"]],
+["s","Would you be comfortable creating an account and sharing basic information?",["Yes","No","It depends on the information requested"]],
+["m","What concerns might you have about a fellowship app?",["Privacy of personal information","Unwanted notifications","Internet and data costs","Difficulty using the app","Too many features or unnecessary complexity","Unwanted communication from other users","Other (please specify)"]],
+["s","Would you prefer it to work with limited internet access, where possible? 📶",YNN],
+["t","What would make you comfortable recommending the app to another member?"],
+["t","If YOU decided what the app contains, what would you include? 🎨"],
+["t","If the app could solve just ONE problem for you as a member, what should it be?"],
+["t","What’s one unique or exciting idea you’d love to see in the app? 🤩"],
+["t","Anything else the development team should know about your expectations?"]];
+const cheer=["Nice one! 🙌","Love it! 💛","Great pick ✨","Noted! 📝","You’re on fire 🔥","Thank you! 🙏","Brilliant! 🌟"];
+const ENDPOINT="https://script.google.com/macros/s/AKfycbzc_Rjlcpglu1n7lXjYD4moMLMi0kO9gwVP99JyTzemW92ZdeGKDJXlBI3DMINhh-USaw/exec";
+const $=s=>document.querySelector(s),N=Q.length;let i=-1,A={},O={},tm;
+const sec=k=>{let c=0;for(let j=0;j<S.length;j++){c+=S[j][4];if(k<c)return j}return S.length-1};
+const first=k=>{let c=0;for(let j=0;j<sec(k);j++)c+=S[j][4];return c===k};
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('s');clearTimeout(tm);tm=setTimeout(()=>e.classList.remove('s'),1100)}
+function opts(k){return Q[k][0]==="k"?(A[6]||[]).filter(x=>!x.startsWith("Other")):Q[k][2]}
+function go(n,d){d=d||(n>i?1:-1);if(n>=0&&n<N&&Q[n][0]==="k"&&!opts(n).length){n+=d}i=Math.max(-1,Math.min(N,n));draw(d)}
+function draw(d){
+ const c=$('#card'),r=document.documentElement;c.className='card '+(d>0?'in-r':'in-l');
+ $('#bar').style.width=Math.max(0,Math.min(100,(i+1)/N*100))+'%';
+ if(i<0){r.style.setProperty('--h',260);c.innerHTML=`<div class="big">🕊️</div><h1>MUST CU App Survey</h1><p>We’re dreaming up a mobile app for our fellowship, and <b>you</b> get to shape it. No right or wrong answers, just honest thoughts and wild ideas.</p><p class="mut">⏱ About 8 minutes · 34 quick questions · swipe or tap to move</p><div class="nav"><span></span><button class="b" id="nx">Let’s begin →</button></div>`;$('#nx').onclick=()=>go(0);$('#hint').textContent="";return}
+ if(i>=N){r.style.setProperty('--h',140);c.innerHTML=`<div class="big">🎉</div><h1>Thank you!</h1><p>Your ideas and expectations will help shape an app that members genuinely want to use.</p><div class="nav"><button class="b g" id="pv">← Review</button><button class="b" id="cp">Copy my answers</button></div><p class="mut" id="sm"></p><p class="mut" id="cpm"></p>`;
+  $('#pv').onclick=()=>go(N-1);$('#cp').onclick=async()=>{const t=Q.map((q,k)=>{const a=A[k];return (k+1)+". "+q[1]+"\n   → "+(Array.isArray(a)?a.join(", "):a||"(skipped)")+(O[k]?" ["+O[k]+"]":"")}).join("\n");try{await navigator.clipboard.writeText(t);$('#cpm').textContent="Copied! ✅"}catch(e){$('#cpm').textContent="Couldn’t copy on this device."}};
+  confetti();send();$('#hint').textContent="";return}
+ const s=sec(i),m=S[s],q=Q[i],t=q[0];r.style.setProperty('--h',m[2]);
+ let body="";
+ if(t==="t")body=`<textarea id="ta" placeholder="Type your thoughts here… ✍️">${A[i]||""}</textarea>`;
+ else{const L=opts(i),a=A[i]||(t==="s"?"":[]);body=`<div class="opts ${t==="s"?"":"m"}">`+L.map((o,n)=>`<button class="o ${(t==="s"?a===o:a.includes(o))?"on":""}" style="--n:${n}" data-o="${o.replace(/"/g,"&quot;")}"><i>✓</i><span>${o}</span></button>`).join("")+`</div><input type="text" id="ot" placeholder="Please specify…" style="display:none" value="${O[i]||""}">`}
+ c.innerHTML=`<span class="chip">${m[0]} ${m[1]} · ${i+1}/${N}</span><h2>${q[1]}</h2>${t==="k"?'<p class="mut">Choose up to 3</p>':t==="m"?'<p class="mut">Select as many as you like</p>':t==="t"?'<p class="mut">Optional. Skip if nothing comes to mind 😊</p>':''}${body}<div class="nav"><button class="b g" id="pv">← Back</button><button class="b" id="nx">${i===N-1?"Finish 🎉":t==="s"&&!A[i]?"Skip":"Next →"}</button></div>`;
+ $('#hint').textContent=first(i)?m[3]:"Swipe ← → or use arrow keys";
+ if(first(i)&&i>0)toast(m[0]+" "+m[1]+"!");
+ $('#pv').onclick=()=>go(i-1);$('#nx').onclick=()=>go(i+1);
+ if(t==="t"){const ta=$('#ta');ta.oninput=()=>A[i]=ta.value}
+ else{const ot=$('#ot'),sync=()=>{const on=t!=="s"?false:false;ot.style.display=(A[i]&&[].concat(A[i]).some(x=>x.startsWith("Other")))?"block":"none"};sync();ot.oninput=()=>O[i]=ot.value;
+  c.querySelectorAll('.o').forEach(b=>b.onclick=()=>{const o=b.dataset.o;
+   if(t==="s"){A[i]=o;c.querySelectorAll('.o').forEach(x=>x.classList.toggle('on',x===b));$('#nx').textContent="Next →";sync();toast(cheer[Math.random()*cheer.length|0]);if(!o.startsWith("Other"))setTimeout(()=>go(i+1,1),420)}
+   else{let a=A[i]||[];if(a.includes(o))a=a.filter(x=>x!==o);else{if(t==="k"&&a.length>=3){toast("Max 3 🙂");return}a=a.concat(o)}A[i]=a;b.classList.toggle('on');sync()}})}
+}
+let sent=false;
+async function send(){
+ const m=$('#sm');if(sent||!m)return;
+ if(ENDPOINT.indexOf("PASTE")===0){m.textContent="Preview mode: no form connected yet.";return}
+ m.textContent="Sending your answers… ⏳";
+ const a=Q.map((q,k)=>{let v=A[k];if(Array.isArray(v))v=v.map(x=>x.startsWith("Other")?(O[k]||"Other"):x);else if(v&&v.startsWith("Other"))v=O[k]||"Other";return v||""});
+ try{await fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify({a:a})});sent=true;m.textContent="Your answers are in. Thank you! ✅";const p=$('#pv');if(p)p.remove()}
+ catch(e){m.innerHTML='Couldn’t send. Check your internet. <button class="b" id="rt">Try again</button>';$('#rt').onclick=send}
+}
+function confetti(){const E=["🎉","✨","💛","🕊️","🙌","⭐"];for(let k=0;k<36;k++){const e=document.createElement('span');e.className='cf';e.textContent=E[k%E.length];e.style.left=Math.random()*100+'vw';e.style.animationDuration=2.2+Math.random()*2.2+'s';e.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),5500)}}
+let sx=0,sy=0;
+addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+addEventListener('touchend',e=>{if(e.target.closest('textarea,input'))return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.5){if(dx<0&&i<N)go(i+1,1);else if(dx>0&&i>=0)go(i-1,-1)}},{passive:true});
+addEventListener('keydown',e=>{const tx=/TEXTAREA|INPUT/.test(e.target.tagName);if(e.key==="ArrowRight"&&!tx&&i<N)go(i+1,1);if(e.key==="ArrowLeft"&&!tx&&i>=0)go(i-1,-1);if(e.key==="Enter"&&(!tx||e.ctrlKey)&&i<N&&e.target.tagName!=="BUTTON")go(i+1,1)});
+draw(1);
+</script></body></html>
